@@ -42,10 +42,10 @@ input_text = st.text_input("Enter a Hebrew word:", "", max_chars=30)
 def type_machine(str):
     typed_text = st.empty()
     for i in range(1, len(str) + 1):
-        typed_text.text(str[:i])
+        typed_text.text(str[:i], unsafe_allow_html=True)  # Use unsafe_allow_html to allow HTML tags
         time.sleep(0.02)
     time.sleep(1.0)
-    typed_text.text(str)
+    typed_text.text(str, unsafe_allow_html=True)  # Ensure the entire text is displayed
 
 # Check if input is submitted
 if input_text:
@@ -60,9 +60,9 @@ elif input_submitted:
     # Calculate gematria value
     gematria_value = gmatria(input_text, numerology)
     st.success(f"The Gmatria value of '{input_text}' is {gematria_value}")
-    df = similar_words(gematria_value, num_map_df)
+    df = similar_words(gmatria_value, num_map_df)
     df = df.drop(columns=df.columns[0])
-    type_machine(str="Here are a few other Shorashim with the same gmatria numerical value:")
+    type_machine(str="Here are a few other Shorashim with the same gmatria numerical value:<br><br>")
     st.dataframe(df)
 
 # Add footer

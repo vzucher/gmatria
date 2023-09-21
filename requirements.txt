@@ -1,8 +1,5 @@
-googletrans=4.0.0-rc.1
+googletrans==4.0.0-rc.1
 streamlit==1.26.0
 pandas==1.4.4
 numpy==1.23.4
-json==2.0.9
-re==2.2.1.
 nltk==3.7
-

@@ -85,3 +85,4 @@ elif input_submitted:
     type_machine(str)
     st.dataframe(df)
 
+print('all rights reserved by @vzucher')

@@ -63,10 +63,10 @@ def is_hebrew(text):
     hebrew_pattern = r'^[א-ת\s]+$'
     return bool(re.match(hebrew_pattern, text))
 
-def is_name(text):
-    nd = NameDataset()
-    check = nd.search(text) != None
-    return check
+# def is_name(text):
+#     nd = NameDataset()
+#     check = nd.search(text) != None
+#     return check
 
 nltk.download('words', force=True)
 word_list = set(words.words())
@@ -132,15 +132,15 @@ def calculator(input_text, numerology, dic):
         type_machine(str="Here are a few other Shorashim with the same gmatria numerical value:")
         display_df(gematria_value)
         
-    elif is_name(input_text):
-        translator = Translator()
-        translated_text = translator.translate(input_text, src='en', dest='he').text
-        gematria_value = gmatria(translated_text, numerology)
-        st.success(f"The Gmatria value of the name '{input_text}' is {gematria_value}")
-        df = similar_words(gematria_value, dic)
-        df = df.drop(columns=df.columns[0])
-        type_machine(str="Here are a few other words in Hebrew with the same gmatria numerical value:")
-        display_df(gematria_value)
+    # elif is_name(input_text):
+    #     translator = Translator()
+    #     translated_text = translator.translate(input_text, src='en', dest='he').text
+    #     gematria_value = gmatria(translated_text, numerology)
+    #     st.success(f"The Gmatria value of the name '{input_text}' is {gematria_value}")
+    #     df = similar_words(gematria_value, dic)
+    #     df = df.drop(columns=df.columns[0])
+    #     type_machine(str="Here are a few other words in Hebrew with the same gmatria numerical value:")
+    #     display_df(gematria_value)
         
     # If it's an English word
     elif is_english(input_text):

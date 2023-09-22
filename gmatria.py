@@ -1,4 +1,4 @@
-from names-dataset import NameDataset
+# from names-dataset import NameDataset
 from googletrans import Translator
 from nltk.corpus import words
 import streamlit as st

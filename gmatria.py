@@ -14,22 +14,24 @@ st.set_page_config(
 )
 
 # Custom CSS
-
+# Custom CSS
+# Custom CSS
+# Custom CSS
 st.markdown("""
 <style>
 .center-text {
     text-align: center !important;
 }
-
-.center-text td, .center-text th {
+td, th {
     text-align: center !important;
 }
 .dataframe-container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
 }
-
 .footer {
     text-align: center;
     margin-top: 20px;  /* Add 20px of space above the footer */
@@ -38,10 +40,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+
 # Page title
 st.title('Gmatria Calculator')
-st.write('<div class="dataframe-container"></div>', unsafe_allow_html=True)
 
+st.write('<div class="dataframe-container"></div>', unsafe_allow_html=True)
 
 # Input field
 input_text = st.text_input("Enter a Hebrew or English word or phrase:", "", max_chars=30)
@@ -105,8 +108,8 @@ def type_machine(str):
 def display_df(gval):
     df = similar_words(gval, dic)
     df = df.drop(columns=df.columns[0])
-    with st.markdown("<div class='dataframe-container'>", unsafe_allow_html=True):
-        filtered_df = st.dataframe(df)
+    filtered_df = st.dataframe(df)
+    return filtered_df
         
 def calculator(input_text, numerology, dic):
 

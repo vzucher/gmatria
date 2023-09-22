@@ -14,34 +14,41 @@ st.set_page_config(
 )
 
 # Custom CSS
+
 st.markdown("""
 <style>
-.centered {
-    display: flex;
-    justify-content: center;
-}
 .center-text {
     text-align: center !important;
 }
-td {
+
+.center-text td, .center-text th {
     text-align: center !important;
+}
+.dataframe-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .footer {
     text-align: center;
     margin-top: 20px;  /* Add 20px of space above the footer */
+}
 </style>
 """, unsafe_allow_html=True)
 
+
 # Page title
 st.title('Gmatria Calculator')
+st.write('<div class="dataframe-container"></div>', unsafe_allow_html=True)
+
 
 # Input field
 input_text = st.text_input("Enter a Hebrew or English word or phrase:", "", max_chars=30)
 
 # Load datasets
 numerology_file_path = "data/numerology.json"
-num_map_df = pd.read_csv('data/num_map_df.csv')
+dic = pd.read_csv('data/dic.csv')
 
 # Load numerology from JSON file
 with open(numerology_file_path, 'r') as f:
@@ -77,10 +84,10 @@ def gmatria(word, numerology):
     word = word.replace(" ", "")
     word = [*word]
     mapped_array = [numerology[element] for element in word]
-    return sum(mapped_array)  
+    return sum(mapped_array)
 
-def similar_words(gmatria_val, num_map_df):
-    return num_map_df[num_map_df['Numerical Value'] == gmatria_val]
+def similar_words(gmatria_val, dic):
+    return dic[dic['Gmatria Value'] == gmatria_val]
 
 
 # Function to create a typing effect
@@ -96,12 +103,12 @@ def type_machine(str):
 #     st.markdown("<div class='centered'><table class='center-text'>" + df.to_html(classes='center-text', index=False) + "</table></div>", unsafe_allow_html=True)
 
 def display_df(gval):
-        df = similar_words(gval, num_map_df)
-        df = df.drop(columns=df.columns[0])
+    df = similar_words(gval, dic)
+    df = df.drop(columns=df.columns[0])
+    with st.markdown("<div class='dataframe-container'>", unsafe_allow_html=True):
         filtered_df = st.dataframe(df)
-        return filtered_df
-
-def calculator(input_text, numerology, num_map_df):
+        
+def calculator(input_text, numerology, dic):
 
     # If no input provided, just return
     if not input_text:
@@ -111,7 +118,7 @@ def calculator(input_text, numerology, num_map_df):
     if is_hebrew(input_text):
         gematria_value = gmatria(input_text, numerology)
         st.success(f"The Gmatria value of '{input_text}' is {gematria_value}")
-        df = similar_words(gematria_value, num_map_df)
+        df = similar_words(gematria_value, dic)
         df = df.drop(columns=df.columns[0])
         type_machine(str="Here are a few other Shorashim with the same gmatria numerical value:")
         display_df(gematria_value)
@@ -123,9 +130,9 @@ def calculator(input_text, numerology, num_map_df):
         translated_text = remove_nekudot(translated_text)
         gematria_value = gmatria(translated_text, numerology)
         st.success(f"The Gmatria value of '{translated_text}' (translated from '{input_text}') is {gematria_value}")
-        df = similar_words(gematria_value, num_map_df)
+        df = similar_words(gematria_value, dic)
         df = df.drop(columns=df.columns[0])
-        type_machine(str="Here are a few other Shorashim with the same gmatria numerical value:")
+        type_machine(str="Here are a few other words in Hebrew with the same gmatria numerical value:")
         display_df(gematria_value)
 
     # If input isn't valid Hebrew or English
@@ -133,7 +140,7 @@ def calculator(input_text, numerology, num_map_df):
         st.warning("Please enter a valid Hebrew or English word or phrase.")
         
         
-calculator(input_text, numerology, num_map_df)
+calculator(input_text, numerology, dic)
 
 # Add a centered footer
 st.markdown("<div class='footer'>All rights reserved by @vzucher</div>", unsafe_allow_html=True)
